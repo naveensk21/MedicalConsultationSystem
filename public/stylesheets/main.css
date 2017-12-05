@@ -1,0 +1,49 @@
+.login{
+    margin-top: 90px;
+}
+
+#registration{
+    margin-top: 90px
+}
+
+hr{
+    width: 50%;
+}
+
+.thumbnail img {
+    width: 100%;
+}
+
+.thumbnail {
+    padding: 0;
+}
+
+.thumbnail .caption-full {
+    padding: 9px;
+}
+#deleteForm {
+    display: inline;
+}
+
+#deleteComment{
+    display: inline;
+}
+
+/* CSS for the google map image in show discussion page*/
+#map {
+    height: 400px;
+    width: 100%;
+}
+
+#clinic-li {
+    margin-top: 20px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.col-centered{
+  padding-top: 35px;
+  display:inline-block;
+}
+
+    

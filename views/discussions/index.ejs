@@ -1,0 +1,40 @@
+<%include ../partials/header%>    
+
+<div class="container">
+     <header class="jumbotron">
+         <div class="container">
+             <h1>Welcome To The Online Consulatation System</h1>
+             <p>View our certified doctors from all over the world</p>
+             <% if (currentUser && currentUser.isAdmin) { %>
+             <p>
+                <a class="btn btn-primary btn-large" href="/discussions/new">Add New Discussion</a>
+             </p>
+             <% } %>
+             <p>
+                 <form actpion="/discussions" method="GET" class=" form-inline">
+                     <div class="form-group">
+                         <input type"text" name="search" placeholder="search..." class="form-control">
+                         <input type="submit" value="search" class="btn btn-default">
+                     </div>
+                 </form>
+             </p>
+         </div>
+     </header>
+     
+     <div class="row text-center" style="display:flex; flex-wrap: wrap;">
+        <% discussions.forEach(function(discussion){ %>
+            <div class="col-md-3 col-sm-6">
+                <div class="thumbnail">
+                   
+                   <div class="caption">
+                       <h4><%= discussion.name %></h4>
+                   </div>
+                   <p>
+                       <a href="/discussions/<%= discussion._id %>" class="btn btn-primary">More Info</a>
+                   </p>
+                </div>
+            </div>
+        <% }); %>
+    </div>
+</div>
+</body>

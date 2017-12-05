@@ -1,0 +1,85 @@
+<%include ../partials/header%>    
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="list-group">
+                <li class="list-group-item active" id="clinic-li" >Clinic Location</li>
+            </div>
+            <div id = "map" ></div>
+        </div>
+        <div class="col-md-9">
+            <div class="thumbnail">
+                <img class="img-responsive" src="<%= discussion.image %>">
+                <div class="caption-full">
+                    
+                    <h4><a><%=discussion.name%></a></h4>
+                    <p><%= discussion.description %></p>
+                    <p>
+                        <em>Submitted by: <%= discussion.author.username %>, <%= moment(discussion.createdAt).fromNow() %></em>                   
+                    </p>
+                    <% if (currentUser && discussion.author.id.equals(currentUser._id) || currentUser && currentUser.isAdmin ) { %>
+                        <a class="btn btn-xs btn-warning" href="/discussions/<%=discussion._id%>/edit">Edit</a>
+                        <form id="deleteForm" action="/discussions/<%=discussion._id%>?_method=DELETE" method="POST">
+                            <button class="btn btn-xs btn-danger">Delete</button>
+                        </form>
+                    <% } %>
+                </div>
+            </div>
+            <div class="well">
+                <div class="text-right">
+                    <a class="btn btn-success" href="/discussions/<%= discussion._id %>/comments/new">Add New Comment</a>
+                </div>
+                <hr>
+                <% discussion.comments.forEach(function(comment){ %>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <strong><%= comment.author.username %></strong>
+                            <span class="pull-right"><%= moment(comment.createdAt).fromNow() %></span>
+                            <p>
+                                <%= comment.text %> 
+                            </p>
+                        <% if (currentUser && comment.author.id.equals(currentUser._id) || currentUser && currentUser.isAdmin) { %>
+                            <a class="btn btn-xs btn-warning" href="/discussions/<%=discussion._id%>/comments/<%=comment._id%>/edit">Edit</a>
+                            <form id="deleteComment" action="/discussions/<%=discussion._id%>/comments/<%=comment._id%>?_method=DELETE" method="POST">
+                                <input type="submit" class="btn btn-danger btn-xs" value="Delete">
+                            </form>
+                        <% } %>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+<script>
+  function initMap() {
+    var lat = <%= discussion.lat %>;
+    var lng = <%= discussion.lng %>;
+    var center = {lat: lat, lng: lng };
+    var map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 8,
+        center: center,
+        scrollwheel: false
+    });
+    var contentString = `
+      <strong><%= discussion.name %><br />
+      <%= discussion.location %></strong>
+      <p><%= discussion.description %></p>
+    `
+    var infowindow = new google.maps.InfoWindow({
+      content: contentString
+    });
+    
+    var marker = new google.maps.Marker({
+        position: center,
+        map: map
+    });
+    marker.addListener('click', function() {
+      infowindow.open(map, marker);
+    });
+  }
+</script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDFCBmgVpgJIUhnF0NCO3T-1YgZ_npcwUI&callback=initMap"></script>
